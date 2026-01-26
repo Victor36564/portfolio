@@ -38,28 +38,44 @@
 
         <div class="prose prose-slate prose-lg text-slate-600 leading-relaxed">
             <p>
-                This project focuses on the design and simulation of a quadruped robot capable of traversing uneven terrain. The primary goal was to implement a Model Predictive Control (MPC) algorithm to stabilize the robot's chassis while maintaining a trot gait.
+                This project focuses on the full-stack development of a receipt budgeting application that allows users to capture or upload images of receipts and automatically extract and store key spending data.
             </p>
             
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">The Challenge</h3>
             <p>
-                Developing a stable locomotion controller is difficult due to the non-linear dynamics of legged robots. I utilized Gazebo for physics simulation and ROS2 for the communication architecture between the perception and control nodes.
+                Managing personal finances becomes difficult when spending data is fragmented, incomplete, or requires significant manual effort to track. Many users rely on physical receipts or static digital images that are easily lost, forgotten, or never logged into budgeting tools.
+            </p>
+            <p style="margin-top: 1em;">
+                This problem affects not only individuals trying to budget more effectively, but also professionals who need accurate and organized expense records for reimbursements or tax purposes. The challenge was to create an all-in-one system that could reliably extract meaningful data from receipt images and present it in a clear, usable format.
             </p>
 
             <div class="my-8 rounded-2xl overflow-hidden shadow-sm">
-                <img src="https://placehold.co/800x400/e2e8f0/64748b?text=Simulation+Screenshot" class="w-full">
+                <img src="images/snaptrack-app_with_margin.png" class="w-full">
             </div>
 
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">The Solution</h3>
             <p>
-                The control architecture was split into two levels:
+                A full-stack web application using FastAPI for the backend and React for the frontend was developed. The application follows a multi-stage processing pipeline to convert raw receipt images into structured financial data.
             </p>
-            <ul class="list-disc pl-5 space-y-2 mb-6">
-                <li><strong>High-level Planner:</strong> Determines the foot placement and body trajectory.</li>
-                <li><strong>Low-level Controller:</strong> Calculates joint torques using inverse dynamics.</li>
-            </ul>
-            <p>
-                The result was a robust simulation where the robot could recover from external pushes and navigate slopes up to 15 degrees.
+            <p style="margin-top: 1em;">
+                The first stage consists of an image preprocessing pipeline built with OpenCV. Classical computer vision techniques were used to binarize the image, detect the outer edges of the receipt, remove noise such as creases or background clutter, and crop the receipt to improve text recognition accuracy.
+            </p>
+            <p style="margin-top: 1em;">
+                Next, a feature extraction system was implemented using EasyOCR, an optical character recognition library that detects text regions, draws bounding boxes around them, and converts the detected content into machine-readable text. From this output, meaningful receipt data such as vendor names, line items, and totals could be identified.
+            </p>
+            <p style="margin-top: 1em;">
+                Once extracted, the structured data is sent to a backend database, where receipts are stored and aggregated. The application automatically tracks monthly spending totals, which are displayed on a user dashboard for easy budgeting and review.
+            </p>
+            <p style="margin-top: 1em;">
+                The result is a streamlined, end-to-end receipt management tool that combines image processing, OCR, and full-stack web development into a single, practical application.
+            </p>
+            <p style="margin-top: 1em;">
+                The GitHub repository for this project can be found
+                <a href="https://github.com/sandjman56/SnapTrack"
+                    class="text-indigo-600 font-medium underline hover:no-underline"
+                    target="_blank" rel="noopener noreferrer">
+                    here
+                </a>
             </p>
         </div>
         

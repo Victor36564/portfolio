@@ -39,28 +39,37 @@
 
         <div class="prose prose-slate prose-lg text-slate-600 leading-relaxed">
             <p>
-                This project focuses on the design and simulation of a quadruped robot capable of traversing uneven terrain. The primary goal was to implement a Model Predictive Control (MPC) algorithm to stabilize the robot's chassis while maintaining a trot gait.
+                This project focuses on designing and deploying a scalable data analytics and machine learning pipeline for cybersecurity traffic analysis using real-world MQTT network data.
             </p>
             
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">The Challenge</h3>
             <p>
-                Developing a stable locomotion controller is difficult due to the non-linear dynamics of legged robots. I utilized Gazebo for physics simulation and ROS2 for the communication architecture between the perception and control nodes.
+                The widespread adoption of IoT systems has made lightweight protocols like MQTT essential for efficient device communication. However, MQTT’s simplicity also exposes IoT networks to security threats such as denial-of-service attacks, unauthorized access, and message flooding. Identifying these attacks is difficult due to the scale and variability of IoT traffic and the subtle nature of malicious behavior. Addressing these challenges requires scalable analytics and machine learning techniques capable of detecting attacks in real-world MQTT network data.
             </p>
 
             <div class="my-8 rounded-2xl overflow-hidden shadow-sm">
-                <img src="https://placehold.co/800x400/e2e8f0/64748b?text=Simulation+Screenshot" class="w-full">
+                <img src="images/mqtt.png" class="w-full">
             </div>
 
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">The Solution</h3>
             <p>
-                The control architecture was split into two levels:
+                I designed an end-to-end data pipeline that emphasized scalability, modularity, and reproducibility::
             </p>
             <ul class="list-disc pl-5 space-y-2 mb-6">
-                <li><strong>High-level Planner:</strong> Determines the foot placement and body trajectory.</li>
-                <li><strong>Low-level Controller:</strong> Calculates joint torques using inverse dynamics.</li>
+                <li><strong>Data Ingestion & Storage:</strong> Both training and testing MQTT datasets were ingested into a PostgreSQL database under a dedicated schema, with explicit labeling to distinguish dataset splits.</li>
+                <li><strong>Distributed Analytics with Spark:</strong> All core analytics were implemented using PySpark, enabling efficient processing of large datasets directly from the database.</li>
+                <li><strong>Publisher/Subscriber Architecture:</strong> Kafka was used to ingest and analyze live YouTube comments related to cybersecurity topics, mapping real-world discussion trends to known attack categories.</li>
+                <li><strong>Machine Learning Modeling:</strong> Multiple classifiers were built and evaluated in both Spark ML and PyTorch, with systematic hyperparameter tuning and performance comparison to identify the most effective models.</li>
+                <li><strong>Cloud Deployment:</strong> The entire workflow was adapted to run in a cloud environment, ensuring the project could scale beyond local hardware limitations and mirror real-world production constraints.</li>
+                
             </ul>
             <p>
-                The result was a robust simulation where the robot could recover from external pushes and navigate slopes up to 15 degrees.
+                The GitHub repository for this pipeline can be found 
+                <a href="https://github.com/Victor36564/mqtt-attack-prediction-pipeline"
+                    class="text-indigo-600 font-medium underline hover:no-underline"
+                    target="_blank" rel="noopener noreferrer">
+                    here
+                </a>
             </p>
         </div>
         

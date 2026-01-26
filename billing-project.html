@@ -39,28 +39,44 @@
 
         <div class="prose prose-slate prose-lg text-slate-600 leading-relaxed">
             <p>
-                This project focuses on the design and simulation of a quadruped robot capable of traversing uneven terrain. The primary goal was to implement a Model Predictive Control (MPC) algorithm to stabilize the robot's chassis while maintaining a trot gait.
+                This project focuses on the backend development of a secure invoice management system designed to interact seamlessly with the Bill.com API. Built using FastAPI, the application serves as a middleware solution that authenticates users via Microsoft Entra and facilitates the creation, retrieval, and management of invoices.
             </p>
             
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">The Challenge</h3>
             <p>
-                Developing a stable locomotion controller is difficult due to the non-linear dynamics of legged robots. I utilized Gazebo for physics simulation and ROS2 for the communication architecture between the perception and control nodes.
+                Integrating financial software into custom enterprise workflows often presents security and usability hurdles. The primary challenge was to create a system that allows individual users to submit invoices without requiring direct access to the organization's main Bill.com account, significantly reducing the time and effort for managers to create invoices.
+            </p>
+            <p style="margin-top: 1em;">
+                In addition, the Bill.com API sessions expire after 35 minutes of inactivity, requiring constant re-authentication mechanisms to ensure a smooth user experience. The system also needed to dynamically map a user logged in via Microsoft Entra to their specific Vendor ID within the Bill.com ecosystem to ensure that invoices were attributed correctly.
             </p>
 
             <div class="my-8 rounded-2xl overflow-hidden shadow-sm">
-                <img src="https://placehold.co/800x400/e2e8f0/64748b?text=Simulation+Screenshot" class="w-full">
+                <img src="images/billing-ui.png" class="w-full">
             </div>
 
             <h3 class="text-xl font-semibold text-slate-800 mt-8 mb-4">The Solution</h3>
             <p>
-                The control architecture was split into two levels:
+                I developed a robust FastAPI application that orchestrates the entire lifecycle of an invoice submission, from authentication to file storage. The solution is architected into three distinct phases:
             </p>
-            <ul class="list-disc pl-5 space-y-2 mb-6">
-                <li><strong>High-level Planner:</strong> Determines the foot placement and body trajectory.</li>
-                <li><strong>Low-level Controller:</strong> Calculates joint torques using inverse dynamics.</li>
-            </ul>
-            <p>
-                The result was a robust simulation where the robot could recover from external pushes and navigate slopes up to 15 degrees.
+            <p style="margin-top: 1em;">
+                <strong>Authentication and Identity Mapping:</strong> The application utilizes Microsoft Entra OAuth2.0 for secure user authentication. Once a user logs in, the backend captures their email address and queries the Bill.com /List/Vendor.json endpoint. By matching the signed-in user's email against the vendor list, the system automatically retrieves the correct Bill.com Vendor ID, ensuring that all subsequent actions are securely linked to the correct identity.
+            </p>
+            <p style="margin-top: 1em;">
+                <strong>Invoice Creation and Document Handling:</strong> I implemented a multi-step logic flow to handle bill creation. When a user submits a form containing the invoice number, date, amount, and description, the application formats this payload and sends a POST request to the /Crud/Create/Bill.json endpoint. Upon successful creation of the bill entity, the application executes a secondary process using the /UploadAttachment.json endpoint to attach relevant invoice documents (PDFs/images) directly to the newly created bill. This ensures that the financial record and its supporting documentation are always synchronized.
+            </p>
+            <p style="margin-top: 1em;">
+                <strong>Automated Session Management:</strong> To address the API timeout challenge, I engineered an automatic session refresh mechanism. The Bill.com API session remains active for 35 minutes after the last request. To prevent service interruption, the application runs an asynchronous background task that sends a "keep-alive" request every 30 minutes, resetting the countdown and ensuring the session remains active for users throughout their workday.
+            </p>
+            <p style="margin-top: 1em;">
+                I then collaborated with front-end developers to design micro application components integrated with my middleware app APIs.
+            </p>
+            <p style="margin-top: 1em;">
+                A full flowchart of the application can be found 
+                <a href="documents/BILLAPI FlowChart.pdf"
+                    class="text-indigo-600 font-medium underline hover:no-underline"
+                    target="_blank" rel="noopener noreferrer">
+                    here
+                </a>
             </p>
         </div>
         
